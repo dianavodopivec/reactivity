@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reactivity</title>
+</head>
+<body>
+
+    <h1>UI Basado en Estado</h1>
+    <form id="to-do-form">
+        <input type="text" id="to-do-item" placeholder="Añadir una nueva tarea">
+        <input type="submit" value="Añadir">
+    </form>
+    <h2>Lista de Tareas</h2>
+    <ul id="to-do-list"></ul>
+
+    <script>
+
+        //State
+        const state = {
+            todoList: []
+        }
+        
+        //Template UI
+        const template = () => {
+            if(state.todoList.length < 1) {
+                return `<p><em>Sin tareas por hacer ...</em></p>`
+            }
+
+        const toDos = state.todoList.map(item => `<li>${item}</li>`).join("");
+
+        return toDos
+
+        }
+
+        //Render UI
+        const render = () => {
+            console.log(state)
+            const $lista = document.getElementById("to-do-list");
+            if(!$lista) return
+            $lista.innerHTML = template()
+        };
+
+        document.addEventListener("DOMContentLoaded", e => {
+            render()
+        })
+
+        document.addEventListener("submit", e => {
+            if(!e.target.matches("#to-do-form")) return false 
+            e.preventDefault();
+
+            const $item = document.getElementById("to-do-item");
+            if(!$item) return
+
+            //Actualización de STATE y la UI
+            state.todoList.push($item.value);
+            render();
+
+            $item.value = "";
+            $item.focus();
+        });
+
+    </script>
+</body>
+</html>
