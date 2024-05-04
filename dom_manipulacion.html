@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reactivity</title>
+</head>
+<body>
+
+    <h1>Manipulación Manual Del DOM</h1>
+    <form id="to-do-form">
+        <input type="text" id="to-do-item" placeholder="Añadir una nueva tarea">
+        <input type="submit" value="Añadir">
+    </form>
+    <h2>Lista de Tareas</h2>
+    <ul id="to-do-list"></ul>
+
+    <script>
+        const $item = document.getElementById("to-do-item");
+        const $lista = document.getElementById("to-do-list");
+
+        document.addEventListener("submit", e => {
+            if(!e.target.matches("#to-do-form")) return false 
+            e.preventDefault();
+
+            const $li = document.createElement("li");
+            $li.textContent = $item.value;
+            $lista.appendChild($li)
+
+            $item.value = "";
+            $item.focus();
+        })
+    </script>
+</body>
+</html>
