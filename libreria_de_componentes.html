@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reactivity</title>
+  </head>
+  <body>
+    <h1>Libreria de Componentes</h1>
+    <form id="to-do-form">
+      <input type="text" id="to-do-item" placeholder="Añadir una nueva tarea" />
+      <input type="submit" value="Añadir" />
+    </form>
+    <h2>Lista de Tareas</h2>
+    <ul id="to-do-list"></ul>
+
+    <script src="Component.js"></script>
+    <script>
+        
+      const app = new Component({
+        el: "#to-do-list",
+        data: {
+          todoList: [],
+        },
+        template: function (props) {
+          if (props.todoList.length < 1) {
+            return `<p><em>Sin tareas por hacer ...</em></p>`;
+          }
+
+          const toDos = props.todoList
+            .map((item) => `<li>${item}</li>`)
+            .join("");
+
+          return toDos;
+        },
+      });
+
+      document.addEventListener("DOMContentLoaded", (e) => {
+        app.render();
+      });
+
+      //Establecer valores por defecto al State
+      app.setState({
+        todoList: ["Test1", "Test2", "Test3"],
+      });
+
+      document.addEventListener("submit", (e) => {
+        if (!e.target.matches("#to-do-form")) return false;
+        e.preventDefault();
+
+        const $item = document.getElementById("to-do-item");
+        if (!$item) return;
+
+        //Actualización de STATE de forma reactiva
+        const lastState = app.getState(); //Copia de estado anterior
+        lastState.todoList.push($item.value);
+        app.setState({ todoList: lastState.todoList });
+
+        $item.value = "";
+        $item.focus();
+      });
+
+    </script>
+  </body>
+</html>
